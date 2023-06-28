@@ -1,0 +1,33 @@
+{
+    "name": "lack/frontmatter",
+    "type": "project",
+    "description": "Frontmatter parser for PHP",
+    "keywords": ["Frontmatter"],
+    "homepage": "https://infracamp.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthias Leuffen",
+            "email": "matthes@leuffen.de"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "phore/filesystem": "*"
+    },
+
+    "require-dev": {
+        "phore/tester": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lack\\Frontmatter\\": "src"
+        },
+        "files": [
+        ]
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "preferred-install": "source"
+    }
+}
