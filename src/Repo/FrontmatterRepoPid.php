@@ -21,6 +21,20 @@ class FrontmatterRepoPid
 
     }
 
+    public function getPid() : string {
+        return $this->pid;
+    }
+
+    public function getLang() : string {
+        return $this->lang;
+    }
+
+
+    public function __toString()
+    {
+        return $this->pid . " (Lang: " . $this->lang . ")";
+    }
+
 
     public function getDefault() : FrontmatterPage {
         $dirname = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang))->getDirname();
