@@ -22,10 +22,32 @@ class FrontmatterRepoPid
     }
 
 
+    public function getDefault() : FrontmatterPage {
+        $dirname = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang))->getDirname();
+
+        $checkFiles = [
+            $dirname->withSubPath("_default.{$this->lang}.md"),
+            $dirname->withSubPath("_default.md"),
+            $dirname->withRelativePath("..")->withSubPath("_default.{$this->lang}.md"),
+            $dirname->withRelativePath("..")->withSubPath("_default.md"),
+        ];
+
+        foreach ($checkFiles as $file) {
+            if ($file->exists()) {
+                $content = $file->get_contents();
+                $page = (new FrontmatterPageFactory())->parseString($content);
+                $page->header["pid"] = $this->pid;
+                $page->header["lang"] = $this->lang;
+                $page->meta["orig_pid"] = null;
+                return $page;
+            }
+        }
+        throw new \InvalidArgumentException("Cannot find _default page for pid: " . $this->pid);
+    }
 
     public function exists() : bool
     {
-        $path = $this->repo->rootPath->withSubPath($this->repo->getStoreUri($this->pid, $this->lang));
+        $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang));
         return $path->exists();
     }
 
@@ -38,12 +60,15 @@ class FrontmatterRepoPid
         return $page;
     }
 
-    public function get() : FrontmatterPage
+    public function get(bool $returnDefault = false) : FrontmatterPage
     {
-        $path = $this->repo->rootPath->withSubPath($this->repo->getStoreUri($this->pid, $this->lang));
-        if ( ! $path->exists())
+        $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang));
+        if ( ! $path->exists()) {
+            if ($returnDefault)
+                return $this->getDefault();
             throw new \InvalidArgumentException("Cannot find page: " . $path->__toString());
-        $content = $path->get_contents();
+        }
+        $content = $path->assertFile()->get_contents();
         $page = (new FrontmatterPageFactory())->parseString($content);
         $page->header["pid"] = $this->pid;
         $page->header["lang"] = $this->lang;

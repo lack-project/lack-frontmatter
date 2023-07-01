@@ -21,9 +21,9 @@ class FrontmatterRepo
      * @throws \Phore\FileSystem\Exception\PathOutOfBoundsException
      * @internal
      */
-    public function getStoreUri(string $pid, string $lang) : string
+    public function _getStoreUri(string $pid, string $lang) : string
     {
-        return $this->rootPath->withSubPath($pid . ".{$lang}.md")->getUri();
+        return $pid . ".{$lang}.md";
     }
 
     public function selectPid(string $pid, string $lang) : FrontmatterRepoPid
@@ -34,13 +34,14 @@ class FrontmatterRepo
 
     public function storePage(FrontmatterPage $page) : void
     {
-        $path = $this->rootPath->withSubPath($this->getStoreUri($page->header["pid"], $page->header["lang"]));
-        $path->set_contents($page->toString());
+        $path = $this->rootPath->withSubPath($this->_getStoreUri($page->header["pid"], $page->header["lang"]));
+        $path->getDirname()->asDirectory()->assertDirectory(true);
+        $path->asFile()->set_contents($page->toString());
     }
 
 
     public function remove(FrontmatterPage $page) {
-        $path = $this->rootPath->withSubPath($this->getStoreUri($page->header["pid"], $page->header["lang"]));
+        $path = $this->rootPath->withSubPath($this->_getStoreUri($page->header["pid"], $page->header["lang"]));
         $path->unlink();
     }
 
