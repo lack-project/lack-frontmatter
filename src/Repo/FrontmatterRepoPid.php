@@ -36,6 +36,27 @@ class FrontmatterRepoPid
     }
 
 
+    /**
+     * Retrieve coneten from _elements.md files in this directory
+     * and parent directories
+     *
+     * @return string
+     */
+    public function getElementsDef() : string {
+        $curDir = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang))->getDirname();
+        $ret = "";
+        while (true) {
+            if ($curDir->withFileName("_elements.md")->exists()) {
+                $ret .= $curDir->withFileName("_elements.md")->get_contents();
+            }
+            if ((string)$curDir->getDirname()->abs() === (string)$this->repo->rootPath->getDirname()->abs())
+                break;
+            $curDir = $curDir->withParentDir();
+        }
+        return $ret;
+    }
+
+
     public function getDefault() : FrontmatterPage {
         $dirname = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang))->getDirname();
 
