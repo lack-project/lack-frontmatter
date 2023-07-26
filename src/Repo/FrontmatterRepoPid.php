@@ -110,5 +110,33 @@ class FrontmatterRepoPid
         $page->meta["orig_pid"] = $this->pid;
         return $page;
     }
+    
+    
+    public function hasTmp() : bool {
+        $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
+        return $path->exists();
+    }
+    
+    public function getTmp() : FrontmatterPage {
+        $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
+        if ( ! $path->exists()) {
+            throw new \InvalidArgumentException("Cannot find page: " . $path->__toString());
+        }
+        $content = $path->assertFile()->get_contents();
+        $page = (new FrontmatterPageFactory())->parseString($content);
+        $page->header["pid"] = $this->pid;
+        $page->header["lang"] = $this->lang;
+        $page->meta["orig_pid"] = $this->pid;
+        return $page;
+    }
+    
+    public function setTmp(FrontmatterPage|null $page = null) : void {
+        $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
+        if ($page === null)
+            $path->asFile()->unlink();
+        else
+            $path->asFile()->set_contents($page->toString());
+    }
+    
 
 }

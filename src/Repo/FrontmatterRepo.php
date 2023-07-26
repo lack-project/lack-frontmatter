@@ -21,8 +21,12 @@ class FrontmatterRepo
      * @throws \Phore\FileSystem\Exception\PathOutOfBoundsException
      * @internal
      */
-    public function _getStoreUri(string $pid, string $lang) : string
+    public function _getStoreUri(string $pid, string $lang, string $prefix="") : string
     {
+        $pid = explode("/", $pid);
+        // add prefix to last element of pid
+        $pid[count($pid)-1] = $prefix . $pid[count($pid)-1];
+        $pid = implode("/", $pid);
         return $pid . ".{$lang}.md";
     }
 
