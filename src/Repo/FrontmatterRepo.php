@@ -46,7 +46,7 @@ class FrontmatterRepo
 
             $path = phore_uri($file->getRelPath());
             $lang = phore_uri($path->getFilename())->getExtension();
-            $pid = $path->getDirname() ."/" .  phore_uri($path->getFilename())->getFilename();
+            $pid = $path->getDirname() ."/" .  phore_uri(phore_uri($path->getFilename())->getFilename())->getFilename();
 
             if ($filterLang !== null && $filterLang !== $lang)
                 continue;
