@@ -113,6 +113,12 @@ class FrontmatterRepoPid
     }
 
 
+    public function isSystemPid() : bool
+    {
+        // Pid starts witch ~ _ or .
+        return preg_match("/^[~_\.]/", $this->pid);
+    }
+    
     public function hasTmp() : bool {
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
         return $path->exists();
