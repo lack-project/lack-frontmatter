@@ -32,7 +32,7 @@ class FrontmatterRepoPid
 
     public function __toString()
     {
-        return $this->pid . " (Lang: " . $this->lang . ")";
+        return $this->pid;
     }
 
 
@@ -78,7 +78,7 @@ class FrontmatterRepoPid
                 return $page;
             }
         }
-        throw new \InvalidArgumentException("Cannot find _default page for pid: " . $this->pid);
+        throw new \InvalidArgumentException("Cannot find _default page for pid: '" . $this->pid . "'" );
     }
 
     public function exists() : bool
@@ -102,7 +102,7 @@ class FrontmatterRepoPid
         if ( ! $path->exists()) {
             if ($returnDefault)
                 return $this->getDefault();
-            throw new \InvalidArgumentException("Cannot find page: " . $path->__toString());
+            throw new \InvalidArgumentException("Cannot find page: '" . $path->__toString() . "'");
         }
         $content = $path->assertFile()->get_contents();
         $page = (new FrontmatterPageFactory())->parseString($content);
@@ -111,13 +111,13 @@ class FrontmatterRepoPid
         $page->meta["orig_pid"] = $this->pid;
         return $page;
     }
-    
-    
+
+
     public function hasTmp() : bool {
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
         return $path->exists();
     }
-    
+
     public function getTmp() : FrontmatterPage {
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
         if ( ! $path->exists()) {
@@ -130,7 +130,7 @@ class FrontmatterRepoPid
         $page->meta["orig_pid"] = $this->pid;
         return $page;
     }
-    
+
     public function setTmp(FrontmatterPage|null $page = null) : void {
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
         if ($page === null)
@@ -138,6 +138,6 @@ class FrontmatterRepoPid
         else
             $path->asFile()->set_contents($page->toString());
     }
-    
+
 
 }
