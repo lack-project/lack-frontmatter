@@ -68,6 +68,7 @@ class FrontmatterRepoPid
         ];
 
         foreach ($checkFiles as $file) {
+            $file = phore_file($file);
             if ($file->exists()) {
                 $content = $file->get_contents();
                 $page = (new FrontmatterPageFactory())->parseString($content);
