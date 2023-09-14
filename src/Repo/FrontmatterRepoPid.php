@@ -95,6 +95,13 @@ class FrontmatterRepoPid
         $page->meta["orig_pid"] = null;
         return $page;
     }
+    
+    public function remove() : void {
+        $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang));
+        if ( ! $path->exists())
+            return;
+        $path->asFile()->unlink();
+    }
 
     public function get(bool $returnDefault = false) : FrontmatterPage
     {
@@ -118,7 +125,7 @@ class FrontmatterRepoPid
         // Pid starts witch ~ _ or .
         return preg_match("/^[~_\.]/", $this->pid);
     }
-    
+
     public function hasTmp() : bool {
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
         return $path->exists();

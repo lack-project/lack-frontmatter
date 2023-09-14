@@ -53,10 +53,52 @@ class FrontmatterRepo
             if ($filter !== "*" && ! fnmatch($filter, $pid))
                 continue;
 
+
             $ret[] = new FrontmatterRepoPid($this, $pid, $lang);
         }
         return $ret;
     }
+
+
+
+
+
+    public function export(string $filter = "*", string $filterLang=null) : array {
+        $ret = [];
+        foreach ($this->list($filter, $filterLang) as $pid) {
+            $data = $pid->get()->header;
+            $data["pid_new"] = $pid->pid;
+            $ret[] = $data;
+        }
+        return $ret;
+    }
+
+    public function import(array $data) {
+        foreach ($data as $item) {
+            $pidNew = $item["pid_new"];
+            $oldPid = $item["pid"];
+
+            unset($item["pid_new"]);
+            $pageId = $this->selectPid($item["pid"], $item["lang"]);
+            if ( ! $pageId->exists())
+                $pageId->create();
+
+            if ($pidNew === "") {
+                $pageId->remove();
+                return;
+            }
+
+            $pageId->get();
+            $page  = $pageId->get();
+            $page->header = $item;
+            $page->header["pid"] = $pidNew;
+            $this->storePage($page);
+            if ($oldPid !== $pidNew)
+                $this->selectPid($oldPid, $item["lang"])->remove();
+
+        }
+    }
+
 
 
     public function storePage(FrontmatterPage $page) : void
