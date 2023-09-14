@@ -15,6 +15,14 @@ class FrontmatterPage
 
     }
 
+    /**
+     * Return the permalink of the page /path/to/page.de.html
+     * 
+     * @return string
+     */
+    public function getLink () : string {
+        return $this->header["permalink"] ?? "/" .  $this->header["pid"] . "." . $this->header["lang"] . ".html";
+    }
 
     public function toString() : string {
 

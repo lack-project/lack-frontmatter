@@ -60,6 +60,19 @@ class FrontmatterRepo
     }
 
 
+    /**
+     * Returns all Sitelinks as Markdown links [title](path)
+     * @return void
+     */
+    public function getPageLinksAsMardownLinks(string $lang = null) : string {
+        $ret = "";
+        foreach ($this->list("*", $lang) as $pid) {
+            $ret .= "[" . $pid->get()->header["title"] . "](" . $pid->get()->getLink() . ")\n";
+        }
+        return $ret;
+        
+    }
+    
 
 
 
