@@ -106,6 +106,7 @@ class FrontmatterRepo
         $path = $this->rootPath->withSubPath($this->_getStoreUri($page->header["pid"], $page->header["lang"]));
         $path->getDirname()->asDirectory()->assertDirectory(true);
         $path->asFile()->set_contents($page->toString());
+        $path->asFile()->chmod(0777);
     }
 
 
