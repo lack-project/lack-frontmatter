@@ -52,6 +52,12 @@ class FrontmatterRepo
                 continue;
             if ($filter !== "*" && ! fnmatch($filter, $pid))
                 continue;
+            if (str_starts_with($path, "_"))
+                continue;
+            if (str_starts_with($path, "."))
+                continue;
+            if (str_starts_with($path->getFilename(), "_"))
+                continue;
 
 
             $ret[] = new FrontmatterRepoPid($this, $pid, $lang);
@@ -70,9 +76,9 @@ class FrontmatterRepo
             $ret .= "[" . $pid->get()->header["title"] . "](" . $pid->get()->getLink() . ")\n";
         }
         return $ret;
-        
+
     }
-    
+
 
 
 
