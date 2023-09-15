@@ -32,6 +32,9 @@ class FrontmatterPage
         if (trim($headerVar["permalink"] ?? "") === "") {
             unset ($headerVar["permalink"]);
         }
+        if (isset($headerVar["order"])) {
+            $headerVar["order"] = (int)$headerVar["order"];
+        }
         
         
         $header = yaml_emit($headerVar, YAML_UTF8_ENCODING);
