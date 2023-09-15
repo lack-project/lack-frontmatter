@@ -129,12 +129,12 @@ class FrontmatterRepo
         try {
 
             $path->asFile()->chmod(0777);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Ignore (if file was created by other user)
-        } catch (Error $e) {
+        } catch (\Error $e) {
             // Ignore (if file was created by other user)
         }
-        
+
     }
 
 
