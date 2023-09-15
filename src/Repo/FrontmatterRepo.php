@@ -2,6 +2,7 @@
 
 namespace Lack\Frontmatter\Repo;
 
+use Http\Client\Exception;
 use Lack\Frontmatter\FrontmatterPage;
 use Phore\FileSystem\PhoreDirectory;
 
@@ -125,7 +126,13 @@ class FrontmatterRepo
         $path = $this->rootPath->withSubPath($this->_getStoreUri($page->header["pid"], $page->header["lang"]));
         $path->getDirname()->asDirectory()->assertDirectory(true);
         $path->asFile()->set_contents($page->toString());
-        $path->asFile()->chmod(0777);
+        try {
+
+            $path->asFile()->chmod(0777);
+        } catch (Exception $e) {
+            // Ignore (if file was created by other user)
+        }
+        
     }
 
 
