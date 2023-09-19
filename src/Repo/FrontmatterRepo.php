@@ -8,11 +8,11 @@ use Phore\FileSystem\PhoreDirectory;
 
 class FrontmatterRepo
 {
-
+    
     public function __construct(public string|PhoreDirectory $rootPath) {
         $this->rootPath = phore_dir($rootPath);
     }
-
+    
     /**
      * Retrieve the relative path to the file
      *

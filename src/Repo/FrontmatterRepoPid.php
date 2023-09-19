@@ -121,6 +121,12 @@ class FrontmatterRepoPid
         return $page;
     }
 
+    
+    public function getAbsoluteStoreUri() : string
+    {
+        return $this->repo->rootPath . "/". $this->repo->_getStoreUri($this->pid, $this->lang);
+    }
+    
 
     public function isSystemPid() : bool
     {
