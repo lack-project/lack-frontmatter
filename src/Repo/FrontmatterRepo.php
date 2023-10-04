@@ -13,6 +13,10 @@ class FrontmatterRepo
         $this->rootPath = phore_dir($rootPath);
     }
     
+    public function getRootPath() : PhoreDirectory {
+        return $this->rootPath;
+    }
+    
     /**
      * Retrieve the relative path to the file
      *
