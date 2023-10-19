@@ -84,7 +84,14 @@ class FrontmatterRepo
 
     }
 
+    public function getPagePidLinksAsMardownLinks(string $lang = null) : string {
+        $ret = "";
+        foreach ($this->list("*", $lang) as $pid) {
+            $ret .= "[" . ($pid->get()->header["title"] ?? "") . "](" . $pid->pid . ")\n";
+        }
+        return $ret;
 
+    }
 
 
     public function export(string $filter = "*", string $filterLang=null) : array {
