@@ -8,15 +8,15 @@ use Phore\FileSystem\PhoreDirectory;
 
 class FrontmatterRepo
 {
-    
+
     public function __construct(public string|PhoreDirectory $rootPath) {
         $this->rootPath = phore_dir($rootPath);
     }
-    
+
     public function getRootPath() : PhoreDirectory {
         return $this->rootPath;
     }
-    
+
     /**
      * Retrieve the relative path to the file
      *
@@ -78,7 +78,7 @@ class FrontmatterRepo
     public function getPageLinksAsMardownLinks(string $lang = null) : string {
         $ret = "";
         foreach ($this->list("*", $lang) as $pid) {
-            $ret .= "[" . $pid->get()->header["title"] . "](" . $pid->get()->getLink() . ")\n";
+            $ret .= "[" . ($pid->get()->header["title"] ?? "") . "](" . $pid->get()->getLink() . ")\n";
         }
         return $ret;
 
