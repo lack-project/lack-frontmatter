@@ -87,7 +87,7 @@ class FrontmatterRepo
                     $title = str_replace("[", "", $title);
                     $title = str_replace("]", "", $title);
                     
-                    $ret .= "[" . ($pid->get()->header["title"] ?? "") . ": " . $matches[1] . "](" . $pid->get()->getLink() . "#" . phore_slugify($matches[1]) . ")\n";
+                    $ret .= "[" . ($pid->get()->header["title"] ?? "") . ": " . $matches[1] . "](" . $pid->get()->getLink() . "#" . phore_slugify($matches[1], true) . ")\n";
                 }, $body);
             }
         }
