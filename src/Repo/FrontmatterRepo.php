@@ -83,6 +83,10 @@ class FrontmatterRepo
                 $body = $pid->get()->body;
                 // Search for all ## <title> in body and return as markdown link title: [title: header2](link#id)
                 preg_replace_callback("/^###? (.*)/i", function ($matches) use (&$ret, $pid) {
+                    $title = ($pid->get()->header["title"] ?? "") . ": " . $matches[1];
+                    $title = str_replace("[", "", $title);
+                    $title = str_replace("]", "", $title);
+                    
                     $ret .= "[" . ($pid->get()->header["title"] ?? "") . ": " . $matches[1] . "](" . $pid->get()->getLink() . "#" . phore_slugify($matches[1]) . ")\n";
                 }, $body);
             }
