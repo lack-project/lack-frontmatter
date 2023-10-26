@@ -82,7 +82,7 @@ class FrontmatterRepo
             if ($includeH2) {
                 $body = $pid->get()->body;
                 // Search for all ## <title> in body and return as markdown link title: [title: header2](link#id)
-                preg_replace_callback("/^## (.*)/i", function ($matches) use (&$ret, $pid) {
+                preg_replace_callback("/^###? (.*)/i", function ($matches) use (&$ret, $pid) {
                     $ret .= "[" . ($pid->get()->header["title"] ?? "") . ": " . $matches[1] . "](" . $pid->get()->getLink() . "#" . phore_slugify($matches[1]) . ")\n";
                 }, $body);
             }
