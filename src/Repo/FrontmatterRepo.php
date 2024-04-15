@@ -86,7 +86,7 @@ class FrontmatterRepo
                     $title = ($pid->get()->header["title"] ?? "") . ": " . $matches[1];
                     $title = str_replace("[", "", $title);
                     $title = str_replace("]", "", $title);
-                    
+
                     $ret .= "[" . ($pid->get()->header["title"] ?? "") . ": " . $matches[1] . "](" . $pid->get()->getLink() . "#" . phore_slugify($matches[1], true) . ")\n";
                 }, $body);
             }
@@ -134,6 +134,8 @@ class FrontmatterRepo
             $pageId->get();
             $page  = $pageId->get();
             $page->header = $item;
+            if ($page->header["short_title"] === "")
+                unset($page->header["short_title"]);
             $page->header["pid"] = $pidNew;
             $this->storePage($page);
             if ($oldPid !== $pidNew)
