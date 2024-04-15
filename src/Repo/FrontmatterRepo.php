@@ -110,6 +110,7 @@ class FrontmatterRepo
         foreach ($this->list($filter, $filterLang) as $pid) {
             $data = $pid->get()->header;
             $data["pid_new"] = $pid->pid;
+            $data["availLangs"] = $pid->getAvailLangs();
             $ret[] = $data;
         }
         return $ret;

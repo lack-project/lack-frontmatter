@@ -29,6 +29,16 @@ class FrontmatterRepoPid
         return $this->lang;
     }
 
+  
+    public function getAvailLangs()
+    {
+        $langs = [];
+        $pids = $this->repo->list($this->pid);
+        foreach ($pids as $page) {
+            $langs[] = $page->lang;
+        }
+        return array_values(array_unique($langs));
+    }
 
     public function __toString()
     {
