@@ -4,6 +4,7 @@ namespace Lack\Frontmatter\Repo;
 
 use Lack\Frontmatter\FrontmatterPage;
 use Lack\Frontmatter\FrontmatterPageFactory;
+use Phore\FileSystem\PhoreDirectory;
 
 class FrontmatterRepoPid
 {
@@ -29,7 +30,7 @@ class FrontmatterRepoPid
         return $this->lang;
     }
 
-  
+
     public function getAvailLangs()
     {
         $langs = [];
@@ -105,7 +106,7 @@ class FrontmatterRepoPid
         $page->meta["orig_pid"] = null;
         return $page;
     }
-    
+
     public function remove() : void {
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang));
         if ( ! $path->exists())
@@ -113,8 +114,8 @@ class FrontmatterRepoPid
         $path->asFile()->unlink();
     }
 
-    
-    
+
+
     public function get(bool $returnDefault = false) : FrontmatterPage
     {
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang));
@@ -131,12 +132,12 @@ class FrontmatterRepoPid
         return $page;
     }
 
-    
+
     public function getAbsoluteStoreUri() : string
     {
         return $this->repo->rootPath . "/". $this->repo->_getStoreUri($this->pid, $this->lang);
     }
-    
+
 
     public function isSystemPid() : bool
     {
@@ -148,6 +149,12 @@ class FrontmatterRepoPid
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
         return $path->exists();
     }
+
+
+    public function getStorageDir() : PhoreDirectory {
+        return phore_dir($this->repo->rootPath->withSubPath(dirname($this->repo->_getStoreUri($this->pid, $this->lang))));
+    }
+
 
     public function getTmp() : FrontmatterPage {
         $path = $this->repo->rootPath->withSubPath($this->repo->_getStoreUri($this->pid, $this->lang, "~"));
