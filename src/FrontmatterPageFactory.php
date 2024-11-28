@@ -13,7 +13,7 @@ class FrontmatterPageFactory
         }
 
         // Split the content into parts by "---"
-        $parts = preg_split('/---/', $string, 3);
+        $parts = preg_split('/(^|\n)---\n/', $string, 3);
 
         // Extract header and body
         $header = trim($parts[1]);
