@@ -7,6 +7,9 @@ class FrontmatterPageFactory
 
     public function parseString(string $string) : FrontmatterPage
     {
+        // Convert crlf to lf
+        $string = str_replace("\r\n", "\n", $string);
+        
         // If the file does not start with "---", assume no frontmatter and return everything as body
         if (substr($string, 0, 3) !== "---") {
             return new FrontmatterPage([], $string);
