@@ -125,7 +125,11 @@ class FrontmatterRepoPid
             throw new \InvalidArgumentException("Cannot find page: '" . $path->__toString() . "'");
         }
         $content = $path->assertFile()->get_contents();
-        $page = (new FrontmatterPageFactory())->parseString($content);
+        try {
+            $page = (new FrontmatterPageFactory())->parseString($content);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException("Cannot parse page: '" . $path->__toString() . "': " . $e->getMessage());
+        }
         $page->header["pid"] = $this->pid;
         $page->header["lang"] = $this->lang;
         $page->meta["orig_pid"] = $this->pid;
